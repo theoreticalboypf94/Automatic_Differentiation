@@ -1,3 +1,6 @@
+#programm based on two class 
+# gramma is Expression = Expression Operation Expression or Operation(Expression)
+
 class Expression:
     operation = ''
     arguments = []
@@ -12,6 +15,9 @@ class Expression:
         return self.operation.to_string(self.arguments)
 
     def simplify(self):
+        """
+        element vise use simplify methot for each extention element
+        """
         #return self.operation.simplify(map(simplify,self.arguments))
         #print(self.arguments, list(map(type,self.arguments)))
         return self.operation.simplify(list(map(lambda x: x.simplify(), self.arguments)))
@@ -95,7 +101,6 @@ class SUBop (Operation):
             if args[1].val == 0:
                 return args[0]
         return Expression(self, args)
-
     def D(self, args):
         return Expression(self, [args[0].D(), args[1].D()])
     def to_string(self, arg):
@@ -111,8 +116,6 @@ class MULop (Operation):
             if args[1].val == 0:
                 return args[1]
         return Expression(self, args)
-
-
     def D(self, args):
         expression1 = Expression(self, [args[0].D(), args[1]])
         expression2 = Expression(self, [args[0], args[1].D()])

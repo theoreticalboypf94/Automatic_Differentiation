@@ -13,20 +13,21 @@ def parser(string : str) -> Expression:
         elif c == ")":
             balance -= 1
         if balance!=0:
-            continue
+            continue        # we don't fall down until zero balance condition - border of expression
 
         if c in "+-*/":
-            #print("fint operation", c)
+            #print("fint operation", c)     #try to find top priority op. * or / and handle it first
             if minimum is None:
                 minimum = i,c
             else:
                 _, old = minimum
                 if old in "*/" and c in "+-":
                     minimum = i,c
-    if minimum is None:
+    if minimum is None:                     #that means that we have constant or Function, without +-.. sin(sin(x)) 
         try:
             return CONST_EXPR(float(string))
         except:
+            # TODO add other functions: now only sin cos x
             if string[0] == "s":
                 arg = parser(string[4:-1])
                 return Expression(Function_sin(), [arg])
@@ -41,6 +42,7 @@ def parser(string : str) -> Expression:
     else:
         index, operation = minimum
         left, right = parser(string[:index]), parser(string[index+1:])
+        #TODO add / operation and pow() function or ^ or **
         if operation == '+':
             return Expression(ADDop(), [left, right])
         elif operation == '-':
@@ -51,10 +53,13 @@ def parser(string : str) -> Expression:
             assert("ERROR BLIAD" is None)
         
 
-    
-
-
 def take_off_brakets(string : str) -> str:
+    """
+    (a+b) + (c-d) - we don't need to remove brakets from here
+    ((((a+b)))))  - we really need to remeve that crap.
+
+    calculate brakets balance,
+    """
     if string[0] == "(" and string[-1] == ")":
         balance = 0
         for i,c in enumerate(string):
@@ -68,7 +73,3 @@ def take_off_brakets(string : str) -> str:
         return take_off_brakets(string[1:-1])
     else:
         return string
-
-
-        
-
