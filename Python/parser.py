@@ -15,7 +15,7 @@ def parser(string : str) -> Expression:
         if balance!=0:
             continue        # we don't fall down until zero balance condition - border of expression
 
-        if c in "+-*/":
+        if c in "+-*/":                     # inter-scope group operations
             #print("fint operation", c)     #try to find top priority op. * or / and handle it first
             if minimum is None:
                 minimum = i,c
