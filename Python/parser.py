@@ -23,7 +23,8 @@ def parser(string : str) -> Expression:
                 _, old = minimum
                 if old in "*/" and c in "+-":
                     minimum = i,c
-    if minimum is None:                     #that means that we have constant or Function, without +-.. sin(sin(x)) 
+    # that means that we have constant or Function, without +-.. sin(sin(x))
+    if minimum is None:
         try:
             return CONST_EXPR(float(string))
         except:
